@@ -2,31 +2,37 @@ package com.geekbrains.springwebhomework.controllers;
 
 import com.geekbrains.springwebhomework.data.Product;
 import com.geekbrains.springwebhomework.repositories.Repositories;
+import com.geekbrains.springwebhomework.services.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import java.util.List;
+
+@RestController
 public class MainController {
 
-    private Repositories repositories;
+    private ProductService productService;
 
-    public MainController(Repositories repositories) {
-        this.repositories = repositories;
+    public MainController(ProductService productService) {
+        this.productService = productService;
     }
 
     @GetMapping("/products")
-    public String showProductPage(Model model){
-        model.addAttribute("products", repositories.getAllProducts());
-        return "table_product_info_page";
+    public List<Product> showProductPage(){
+        return productService.getAllProducts();
     }
 
-    @GetMapping("/products/{id}")
-    public String showProductPage(Model model, @PathVariable Long id){
-        Product product = repositories.findById(id);
-        model.addAttribute("product", product);
-        return "product_info_page";
+    @GetMapping("/products/delete/{id}")
+    public void deleteById(@PathVariable Long id){
+        productService.deleteById(id);
     }
 
+    @GetMapping("/products/change_number")
+    public void changeNumber(@RequestParam Long productId, @RequestParam Integer delta){
+        productService.changeNumber(productId, delta);
+    }
 }

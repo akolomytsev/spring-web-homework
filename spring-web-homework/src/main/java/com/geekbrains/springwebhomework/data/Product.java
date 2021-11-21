@@ -3,15 +3,25 @@ package com.geekbrains.springwebhomework.data;
 public class Product {
     private Long id;
     private String title;
-    private int cost;
+    private Double price;
+    private Integer number;
 
     public Product() {
     }
 
-    public Product(Long id, String title, int cost) {
+    public Product(Long id, String title, Double price, Integer number) {
         this.id = id;
         this.title = title;
-        this.cost = cost;
+        this.price = price;
+        this.number = number;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public Long getId() {
@@ -30,11 +40,11 @@ public class Product {
         this.title = title;
     }
 
-    public int getCost() {
-        return cost;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setCost(int cost) {
-        this.cost = cost;
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }
