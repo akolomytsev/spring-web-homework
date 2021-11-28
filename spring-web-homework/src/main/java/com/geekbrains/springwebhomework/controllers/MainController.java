@@ -14,25 +14,25 @@ import java.util.List;
 
 @RestController
 public class MainController {
-
-    private ProductService productService;
-
-    public MainController(ProductService productService) {
-        this.productService = productService;
-    }
-
-    @GetMapping("/products")
-    public List<Product> showProductPage(){
-        return productService.getAllProducts();
-    }
-
-    @GetMapping("/products/delete/{id}")
-    public void deleteById(@PathVariable Long id){
-        productService.deleteById(id);
-    }
-
-    @GetMapping("/products/change_number")
-    public void changeNumber(@RequestParam Long productId, @RequestParam Integer delta){
-        productService.changeNumber(productId, delta);
-    }
+//
+//    private ProductService productService;
+//
+//    public MainController(ProductService productService) {
+//        this.productService = productService;
+//    }
+//
+//    @GetMapping("/products")
+//    public List<Product> showProductPage(){
+//        return productService.getAllProducts();
+//    }
+//
+//    @GetMapping("/products/delete/{id}")
+//    public void deleteById(@PathVariable Long id){
+//        productService.deleteById(id);
+//    }
+//
+//    @GetMapping("/products/change_number")
+//    public void changeNumber(@RequestParam Long productId, @RequestParam Integer delta){
+//        productService.changeNumber(productId, delta);
+//    }
 }
