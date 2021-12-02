@@ -2,9 +2,10 @@ package com.geekbrains.springwebhomework.data;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,26 +18,25 @@ public class Product {
     @Column(name = "price")
     private Double price;
 
-//    @Column(name = "number")
-//    private Integer number;
+
+    @ManyToMany
+    @JoinTable(name = "orders",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "buyer_id"))
+
+    private List<Buyer> buyers;
+
 
     public Product() {
     }
 
-    public Product(Long id, String title, Double price, Integer number) {
+    public Product(Long id, String title, Double price) {
         this.id = id;
         this.title = title;
         this.price = price;
-        //this.number = number;
+
     }
-//
-//    public Integer getNumber() {
-//        return number;
-//    }
-//
-//    public void setNumber(Integer number) {
-//        this.number = number;
-//    }
+
 
     public Long getId() {
         return id;
@@ -60,6 +60,14 @@ public class Product {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public List<Buyer> getBuyers(){
+        return buyers;
+    }
+
+    public void setBuyers(List<Buyer> buyers) {
+        this.buyers = buyers;
     }
 
     @Override

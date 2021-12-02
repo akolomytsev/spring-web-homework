@@ -5,9 +5,8 @@ public class MainApp {
         SessionFactoryUtils sessionFactoryUtils = new SessionFactoryUtils();
         sessionFactoryUtils.init();
         try {
-            ProductDao productDao = new ProductDaoImpl(sessionFactoryUtils);
-            //userDao.testCaching();
-            System.out.println(productDao.findAll());
+            Dao productDao = new ProductDao(sessionFactoryUtils);
+            System.out.println(productDao.findByIdBuyer(1L));
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
