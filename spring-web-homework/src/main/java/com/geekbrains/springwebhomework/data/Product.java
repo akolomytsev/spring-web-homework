@@ -1,9 +1,23 @@
 package com.geekbrains.springwebhomework.data;
 
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "products")
 public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "price")
     private Double price;
+
+    @Column(name = "number")
     private Integer number;
 
     public Product() {

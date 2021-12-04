@@ -1,42 +1,22 @@
 package com.geekbrains.springwebhomework.repositories;
 
 import com.geekbrains.springwebhomework.data.Product;
-import org.springframework.stereotype.Component;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
-@Component
-public class Repositories {
-    private List<Product> products;
 
-    @PostConstruct
-    public void init(){
-        products = new ArrayList<>(List.of(
-                new Product(1L, "Bread", 42.0, 1),
-                new Product(2L, "Milk", 62.0, 1),
-                new Product(3L, "Butter", 142.0, 1),
-                new Product(4L, "Fish", 890.0, 1),
-                new Product(5L, "Pasta", 75.0, 1),
-                new Product(6L, "Chicken", 240.0, 1),
-                new Product(7L, "Rice", 70.0, 1),
-                new Product(8L, "Tomato", 220.0, 1),
-                new Product(9L, "Apple", 160.0, 1),
-                new Product(10L, "Orange", 220.0, 1)
-        ));
-    }
+@Repository
+public interface Repositories extends JpaRepository<Product, Long> {
 
-    public List<Product> getAllProducts(){
-        return Collections.unmodifiableList(products);
-    }
+    List<Product> findAllByPriceBetween(Double min, Double max);
 
-    public void deleteById(Long id){
-        products.removeIf(s -> s.getId().equals(id));
-    }
+    @Query("select s from Product s where s.price < :max")
+    List<Product> findProductsWithALowPrice(Double max);
 
-    public Product findById(Long id){
-        return products.stream().filter(s -> s.getId().equals(id)).findFirst().get();
-    }
+    @Query("select s from Product s where s.price > :min")
+    List<Product> findProductsWithAHighPrice(Double min);
 }
