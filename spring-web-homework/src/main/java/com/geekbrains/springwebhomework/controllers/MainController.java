@@ -21,6 +21,11 @@ public class MainController {
         return productService.findAll();
     }
 
+    @PostMapping("/products")
+    public Product saveNewProduct(@RequestBody Product product) {
+        return productService.save(product);
+    }
+
     @GetMapping("/products/{id}")
     public Product getProductById(@PathVariable Long id){
         return productService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found, id: " + id));
@@ -36,18 +41,23 @@ public class MainController {
         productService.changeNumber(productId, delta);
     }
 
+//    @GetMapping("/products/price_between")
+//    public List<Product> findByPriceBetween(@RequestParam(defaultValue = "100") Double min, @RequestParam(defaultValue = "500") Double max) {
+//        return productService.findByPriceBetween(min, max);
+//    }
+
     @GetMapping("/products/price_between")
-    public List<Product> findByPriceBetween(@RequestParam(defaultValue = "0") Double min, @RequestParam(defaultValue = "1000") Double max) {
+    public List<Product> findByPriceBetween(@RequestParam(defaultValue = "100") Integer min, @RequestParam(defaultValue = "500") Integer max) {
         return productService.findByPriceBetween(min, max);
     }
 
-    @GetMapping("/products/price_max")
-    public List<Product> findProductsWithALowPrice(@RequestParam(defaultValue = "1000") Double max) {
-        return productService.findProductsWithALowPrice(max);
-    }
-
-    @GetMapping("/products/price_min")
-    public List<Product> findProductsWithAHighPrice(@RequestParam(defaultValue = "0") Double min) {
-        return productService.findProductsWithAHighPrice(min);
-    }
+//    @GetMapping("/products/price_max")
+//    public List<Product> findProductsWithALowPrice(@RequestParam(defaultValue = "1000") Double max) {
+//        return productService.findProductsWithALowPrice(max);
+//    }
+//
+//    @GetMapping("/products/price_min")
+//    public List<Product> findProductsWithAHighPrice(@RequestParam(defaultValue = "0") Double min) {
+//        return productService.findProductsWithAHighPrice(min);
+//    }
 }

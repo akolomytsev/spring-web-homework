@@ -1,4 +1,4 @@
-create table if not exists products (id bigserial primary key, title varchar(255), price double(2), number int);
+create table if not exists products (id bigserial primary key, title varchar(255), price int, number int);
 
 insert into products (title, price, number)
 values

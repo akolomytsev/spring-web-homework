@@ -12,11 +12,11 @@ import java.util.Optional;
 @Repository
 public interface Repositories extends JpaRepository<Product, Long> {
 
-    List<Product> findAllByPriceBetween(Double min, Double max);
+    List<Product> findAllByPriceBetween(Integer min, Integer max);
 
-    @Query("select s from Product s where s.price < :max")
-    List<Product> findProductsWithALowPrice(Double max);
-
-    @Query("select s from Product s where s.price > :min")
-    List<Product> findProductsWithAHighPrice(Double min);
+//    @Query("select s from Product s where s.price < :max")
+//    List<Product> findProductsWithALowPrice(Double max);
+//
+//    @Query("select s from Product s where s.price > :min")
+//    List<Product> findProductsWithAHighPrice(Double min);
 }

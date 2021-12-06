@@ -30,19 +30,27 @@ public class ProductService {
 
     @Transactional
     public void changeNumber(Long productId, Integer delta){
-        Product product = repositories.findById(productId).orElseThrow(() -> new ResourceNotFoundException("It is not possible to change the price of a product. Product not found, id: " + productId));
-        product.setPrice(product.getPrice() + delta);
+        Product product = repositories.findById(productId).orElseThrow(() -> new ResourceNotFoundException("It is not possible to change the number of a product. Product not found, id: " + productId));
+        product.setNumber(product.getNumber() + delta);
     }
 
-    public List<Product> findByPriceBetween(Double min, Double max) {
+//    public List<Product> findByPriceBetween(Double min, Double max) {
+//        return repositories.findAllByPriceBetween(min, max);
+//    }
+
+//    public List<Product> findProductsWithALowPrice(Double max){
+//        return repositories.findProductsWithALowPrice(max);
+//    }
+//
+//    public List<Product> findProductsWithAHighPrice(Double min){
+//        return repositories.findProductsWithAHighPrice(min);
+//    }
+
+    public Product save(Product product) {
+        return repositories.save(product);
+    }
+
+    public List<Product> findByPriceBetween(Integer min, Integer max) {
         return repositories.findAllByPriceBetween(min, max);
-    }
-
-    public List<Product> findProductsWithALowPrice(Double max){
-        return repositories.findProductsWithALowPrice(max);
-    }
-
-    public List<Product> findProductsWithAHighPrice(Double min){
-        return repositories.findProductsWithAHighPrice(min);
     }
 }
