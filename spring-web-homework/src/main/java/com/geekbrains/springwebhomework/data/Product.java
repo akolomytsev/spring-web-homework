@@ -20,6 +20,9 @@ public class Product {
     @Column(name = "number")
     private Integer number;
 
+    @Column(name = "real_value")
+    private Integer realValue;
+
     public Product() {
     }
 
@@ -60,5 +63,13 @@ public class Product {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public Integer getRealValue() {
+        return realValue;
+    }
+
+    public void setRealValue(Integer realValue) {
+        this.realValue = realValue;
     }
 }

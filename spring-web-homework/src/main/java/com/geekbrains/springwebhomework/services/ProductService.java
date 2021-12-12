@@ -2,7 +2,11 @@ package com.geekbrains.springwebhomework.services;
 
 import com.geekbrains.springwebhomework.data.Product;
 import com.geekbrains.springwebhomework.exceptions.ResourceNotFoundException;
-import com.geekbrains.springwebhomework.repositories.Repositories;
+import com.geekbrains.springwebhomework.repositories.ProductRepositories;
+import com.geekbrains.springwebhomework.repositories.specifications.ProductSpecifications;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,25 +16,38 @@ import java.util.Optional;
 @Service
 public class ProductService {
 
-    private Repositories repositories;
+    private ProductRepositories productRepositories;
 
-    public ProductService(Repositories repositories) {
-        this.repositories = repositories;
+    public ProductService(ProductRepositories productRepositories) {
+        this.productRepositories = productRepositories;
+    }
+
+
+    public Page<Product> find(Integer minPrice, Integer maxPrice,String titlePart, Integer page){
+        Specification<Product> spec = Specification.where(null);
+        if (minPrice != null){
+            spec = spec.and(ProductSpecifications.priceGreaterOrEqualsThan(minPrice));
+        } if (maxPrice != null){
+            spec = spec.and(ProductSpecifications.priceLessOrEqualsThan(maxPrice));
+        } if (titlePart != null){
+            spec = spec.and(ProductSpecifications.titleLike(titlePart));
+        }
+        return productRepositories.findAll(spec, PageRequest.of(page - 1, 5));
     }
 
     public List<Product> findAll(){
-        return repositories.findAll();
+        return productRepositories.findAll();
     }
 
-    public Optional<Product> findById(Long id){return repositories.findById(id);}
+    public Optional<Product> findById(Long id){return productRepositories.findById(id);}
 
     public void deleteById(Long id){
-        repositories.deleteById(id);
+        productRepositories.deleteById(id);
     }
 
     @Transactional
     public void changeNumber(Long productId, Integer delta){
-        Product product = repositories.findById(productId).orElseThrow(() -> new ResourceNotFoundException("It is not possible to change the number of a product. Product not found, id: " + productId));
+        Product product = productRepositories.findById(productId).orElseThrow(() -> new ResourceNotFoundException("It is not possible to change the number of a product. Product not found, id: " + productId));
         product.setNumber(product.getNumber() + delta);
     }
 
@@ -47,10 +64,10 @@ public class ProductService {
 //    }
 
     public Product save(Product product) {
-        return repositories.save(product);
+        return productRepositories.save(product);
     }
 
     public List<Product> findByPriceBetween(Integer min, Integer max) {
-        return repositories.findAllByPriceBetween(min, max);
+        return productRepositories.findAllByPriceBetween(min, max);
     }
 }

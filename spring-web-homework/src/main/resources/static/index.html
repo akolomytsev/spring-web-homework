@@ -18,11 +18,13 @@
 
 <div class="container" ng-controller="indexController">
     <p></p>
-    <h3>Фильтрация по цене</h3>
-    <form novalidate ng-submit="filteringByPrice()">
-        <input class="form-control" type="number" placeholder="min" ng-model="productsPriceBetween.min">
+    <h3>Фильтрация по цене и названию</h3>
+    <form novalidate ng-submit="loadProducts()">
+        <input class="form-control" type="text" id="filterTitle" placeholder="Название продукта" ng-model="filter.title_part">
         <p></p>
-        <input class="form-control" type="number" placeholder="max" ng-model="productsPriceBetween.max">
+        <input class="form-control" type="number" id="filterMinPrice" placeholder="min цена" ng-model="filter.min_price">
+        <p></p>
+        <input class="form-control" type="number" id="filterMaxPrice" placeholder="max цена" ng-model="filter.max_price">
         <p></p>
         <button type="submit" class="btn btn-primary">Применить</button>
     </form>
@@ -32,7 +34,7 @@
         <tr>
             <td>ID</td>
             <td>Наименование продукта</td>
-            <td>Количество</td>
+<!--            <td>Количество</td>-->
             <td>Цена</td>
             <td>Действие</td>
         </tr>
@@ -40,11 +42,11 @@
         <tr ng-repeat="s in ProductsList">
             <td>{{s.id}}</td>
             <td>{{s.title}}</td>
-            <td>
-                <button class="btn btn-primary" ng-click="changeNumber(s.id, -1)">-</button>
-                {{s.number}}
-                <button class="btn btn-primary" ng-click="changeNumber(s.id, 1)">+</button>
-            </td>
+<!--            <td>-->
+<!--                <button class="btn btn-primary" ng-click="changeNumber(s.id, -1)">-</button>-->
+<!--                {{s.number}}-->
+<!--                <button class="btn btn-primary" ng-click="changeNumber(s.id, 1)">+</button>-->
+<!--            </td>-->
             <td>{{s.price}}</td>
             <td>
                 <button class="btn btn-danger" ng-click="deleteProduct(s.id)">Убрать товар из корзины</button>

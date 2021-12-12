@@ -1,13 +1,16 @@
 package com.geekbrains.springwebhomework.controllers;
 
 import com.geekbrains.springwebhomework.data.Product;
+import com.geekbrains.springwebhomework.dto.ProductDto;
 import com.geekbrains.springwebhomework.exceptions.ResourceNotFoundException;
 import com.geekbrains.springwebhomework.services.ProductService;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/v1/products")
 public class MainController {
 
     private ProductService productService;
@@ -16,48 +19,39 @@ public class MainController {
         this.productService = productService;
     }
 
-    @GetMapping("/products")
-    public List<Product> showProductPage(){
-        return productService.findAll();
+    @GetMapping
+    public Page<ProductDto> showProductPage(
+            @RequestParam(name = "p", defaultValue = "1") Integer page,
+            @RequestParam(name = "max_price", required = false) Integer maxPrice,
+            @RequestParam(name = "min_price", required = false) Integer minPrice,
+            @RequestParam(name = "title_part", required = false) String titlePart
+    ){
+        if (page <1){
+            page = 1;
+        }
+        return productService.find(minPrice, maxPrice, titlePart, page).map(
+                s -> new ProductDto(s)
+        );
     }
 
-    @PostMapping("/products")
+    @PostMapping
     public Product saveNewProduct(@RequestBody Product product) {
+        product.setId(null);
         return productService.save(product);
     }
 
-    @GetMapping("/products/{id}")
+    @PutMapping
+    public Product updateProduct(@RequestBody Product product) {
+        return productService.save(product);
+    }
+
+    @GetMapping("/{id}")
     public Product getProductById(@PathVariable Long id){
         return productService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found, id: " + id));
     }
 
-    @GetMapping("/products/delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Long id){
         productService.deleteById(id);
     }
-
-    @GetMapping("/products/change_number")
-    public void changeNumber(@RequestParam Long productId, @RequestParam Integer delta){
-        productService.changeNumber(productId, delta);
-    }
-
-//    @GetMapping("/products/price_between")
-//    public List<Product> findByPriceBetween(@RequestParam(defaultValue = "100") Double min, @RequestParam(defaultValue = "500") Double max) {
-//        return productService.findByPriceBetween(min, max);
-//    }
-
-    @GetMapping("/products/price_between")
-    public List<Product> findByPriceBetween(@RequestParam(defaultValue = "100") Integer min, @RequestParam(defaultValue = "500") Integer max) {
-        return productService.findByPriceBetween(min, max);
-    }
-
-//    @GetMapping("/products/price_max")
-//    public List<Product> findProductsWithALowPrice(@RequestParam(defaultValue = "1000") Double max) {
-//        return productService.findProductsWithALowPrice(max);
-//    }
-//
-//    @GetMapping("/products/price_min")
-//    public List<Product> findProductsWithAHighPrice(@RequestParam(defaultValue = "0") Double min) {
-//        return productService.findProductsWithAHighPrice(min);
-//    }
 }
