@@ -1,64 +1,68 @@
-angular.module('app', []).controller('indexController', function ($scope, $http) {
-    const contextPath = 'http://localhost:8189/app/api/v1';
+(function () {
+    angular
+        .module('market-front', ['ngRoute', 'ngStorage'])
+        .config(config)
+        .run(run);
 
-    $scope.loadProducts = function () {
-    console.log($scope.productsPriceBetween);
-        $http({
-        url: contextPath + '/products',
-        method: 'GET',
-        params: {
-        title_part: $scope.filter ? $scope.filter.title_part : null,
-        min_price: $scope.filter ? $scope.filter.min_price : null,
-        max_price: $scope.filter ? $scope.filter.max_price : null,
-        }
-        }).then(function (response){
-        console.log(response.data);
-        $scope.ProductsList = response.data.content;
-        });
-    };
-
-    $scope.deleteProduct = function (productId) {
-    $http.delete(contextPath + '/products' + productId)
-            .then(function (response) {
-                $scope.loadProducts();
+    function config($routeProvider) {
+        $routeProvider
+            .when('/', {
+                templateUrl: 'welcome/welcome.html',
+                controller: 'welcomeController'
+            })
+            .when('/store', {
+                templateUrl: 'store/store.html',
+                controller: 'storeController'
+            })
+            .when('/cart', {
+                templateUrl: 'cart/cart.html',
+                controller: 'cartController'
+            })
+            .otherwise({
+                redirectTo: '/'
             });
     }
 
-//    $scope.changeNumber = function (productId, delta) {
-//        $http({
-//            url: contextPath + '/products/change_number',
-//            method: 'GET',
-//            params: {
-//                productId: productId,
-//                delta: delta
-//            }
-//        }).then(function (response) {
-//            $scope.loadProducts();
-//        });
-//    }
-
-     $scope.createProductJson = function () {
-            console.log($scope.newProductJson);
-            $http.post(contextPath + '/products', $scope.newProductJson)
-                .then(function (response) {
-                    $scope.loadProducts();
-                });
+    function run($rootScope, $http, $localStorage) {
+        if ($localStorage.springWebUser) {
+            $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.springWebUser.token;
         }
+    }
+})();
 
-//        $scope.filteringByPrice = function () {
-//                console.log($scope.productsPriceBetween);
-//                $http({
-//                    url: contextPath + '/products/price_between',
-//                    method: 'GET',
-//                    params: {
-//                        max: $scope.productsPriceBetween.max,
-//                        min: $scope.productsPriceBetween.min
-//                    }
-//                }).then(function (response) {
-//                console.log(response.data);
-//                    $scope.ProductsList = response.data;
-//                });
-//            }
+angular.module('market-front').controller('indexController', function ($rootScope, $scope, $http, $location, $localStorage) {
+    $scope.tryToAuth = function () {
+        $http.post('http://localhost:8189/app/auth', $scope.user)
+            .then(function successCallback(response) {
+                if (response.data.token) {
+                    $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+                    $localStorage.springWebUser = {username: $scope.user.username, token: response.data.token};
 
-    $scope.loadProducts();
+                    $scope.user.username = null;
+                    $scope.user.password = null;
+
+                    $location.path('/');
+                }
+            }, function errorCallback(response) {
+            });
+    };
+
+    $scope.tryToLogout = function () {
+        $scope.clearUser();
+        $scope.user = null;
+        $location.path('/');
+    };
+
+    $scope.clearUser = function () {
+        delete $localStorage.springWebUser;
+        $http.defaults.headers.common.Authorization = '';
+    };
+
+    $rootScope.isUserLoggedIn = function () {
+        if ($localStorage.springWebUser) {
+            return true;
+        } else {
+            return false;
+        }
+    };
 });

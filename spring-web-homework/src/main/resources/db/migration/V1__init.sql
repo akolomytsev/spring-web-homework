@@ -1,24 +1,90 @@
-create table if not exists products (id bigserial primary key, title varchar(255), price int, number int, real_value int);
+create table products
+(
+    id         bigserial primary key,
+    title      varchar(255),
+    price      int,
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp
+);
 
-insert into products (title, price, number, real_value)
-values
-('Bread', 42.45, 1, 0),
-('Milk', 62.55, 1, 0),
-('Butter', 142.35, 1, 0),
-('Fish', 890.00, 1, 0),
-('Pasta', 75.22, 1, 0),
-('Chicken', 240.13, 1, 0),
-('Rice', 70.14, 1, 0),
-('Tomato', 220.75, 1, 0),
-('Apple', 160.99, 1, 0),
-('Orange', 220.11, 1, 0),
-('Bread 0.5', 32.45, 1, 0),
-('Milk 0.5', 42.55, 1, 0),
-('Butter 0.5', 142.35, 1, 0),
-('Fish 0.5', 750.00, 1, 0),
-('Pasta 0.5', 55.22, 1, 0),
-('Chicken 0.5', 210.13, 1, 0),
-('Rice 0.5', 59.14, 1, 0),
-('Tomato 0.5', 170.75, 1, 0),
-('Apple 0.5', 99.99, 1, 0),
-('Orange 0.5', 170.11, 1, 0);
+insert into products (title, price)
+values ('Milk', 100),
+       ('Bread', 80),
+       ('Cheese', 90);
+
+create table users
+(
+    id         bigserial primary key,
+    username   varchar(36) not null,
+    password   varchar(80) not null,
+    email      varchar(50) unique,
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp
+);
+
+create table roles
+(
+    id         bigserial primary key,
+    name       varchar(50) not null,
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp
+);
+
+create table users_roles
+(
+    user_id    bigint not null references users (id),
+    role_id    bigint not null references roles (id),
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp,
+    primary key (user_id, role_id)
+);
+
+insert into roles (name)
+values ('ROLE_USER'),
+       ('ROLE_ADMIN');
+
+insert into users (username, password, email)
+values ('bob', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'bob_johnson@gmail.com'),
+       ('john', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'john_johnson@gmail.com');
+
+insert into users_roles (user_id, role_id)
+values (1, 1),
+       (2, 2);
+
+create table orders
+(
+    id          bigserial primary key,
+    user_id     bigint not null references users (id),
+    total_price int    not null,
+    address     varchar(255),
+    phone       varchar(255),
+    created_at  timestamp default current_timestamp,
+    updated_at  timestamp default current_timestamp
+);
+
+create table order_items
+(
+    id                bigserial primary key,
+    product_id        bigint not null references products (id),
+    order_id          bigint not null references orders (id),
+    quantity          int    not null,
+    price_per_product int    not null,
+    price             int    not null,
+    created_at        timestamp default current_timestamp,
+    updated_at        timestamp default current_timestamp
+);
+
+insert into orders (user_id, total_price, address, phone)
+values (1, 200, 'address', '12345');
+
+insert into order_items (product_id, order_id, quantity, price_per_product, price)
+values (1, 1, 2, 100, 200);
+
+
+
+
+
+
+
+
+
