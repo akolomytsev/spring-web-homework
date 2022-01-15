@@ -6,6 +6,10 @@
 
     function config($routeProvider) {
         $routeProvider
+            .when('/orders', {
+                templateUrl: 'orders/orders.html',
+                controller: 'ordersController'
+            })
             .when('/', {
                 templateUrl: 'welcome/welcome.html',
                 controller: 'welcomeController'
