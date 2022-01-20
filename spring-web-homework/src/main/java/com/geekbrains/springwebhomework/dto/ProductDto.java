@@ -1,6 +1,7 @@
 package com.geekbrains.springwebhomework.dto;
 
 
+import com.geekbrains.springwebhomework.entities.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,5 +13,6 @@ public class ProductDto {
     private Long id;
     private String title;
     private Integer price;
+    //private Category category;
 
 }

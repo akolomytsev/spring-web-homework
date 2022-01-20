@@ -31,7 +31,7 @@ public class ProductsService {
             spec = spec.and(ProductsSpecifications.titleLike(partTitle));
         }
 
-        return productsRepository.findAll(spec, PageRequest.of(page - 1, 50));
+        return productsRepository.findAll(spec, PageRequest.of(page - 1, 8));
     }
 
     public Optional<Product> findById(Long id) {
@@ -48,9 +48,10 @@ public class ProductsService {
 
     @Transactional
     public Product update(ProductDto productDto) {
-        Product product = productsRepository.findById(productDto.getId()).orElseThrow(() -> new ResourceNotFoundException("Невозможно обновить продукта, не надйен в базе, id: " + productDto.getId()));
+        Product product = productsRepository.findById(productDto.getId()).orElseThrow(() -> new ResourceNotFoundException("Невозможно обновить продукта, не найден в базе, id: " + productDto.getId()));
         product.setPrice(productDto.getPrice());
         product.setTitle(productDto.getTitle());
+        product.setCategory(product.getCategory());
         return product;
     }
 }

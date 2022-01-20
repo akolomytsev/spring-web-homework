@@ -1,16 +1,41 @@
+create table categories
+(
+    id                  bigserial primary key,
+    title               varchar(50) not null,
+    created_at          timestamp default current_timestamp,
+    updated_at          timestamp default current_timestamp
+    );
+
+    insert into categories (title)
+    values ('Vegetables'),
+           ('Fruit'),
+           ('Milk products'),
+           ('Bakery products'),
+           ('Meat and meat products');
+
 create table products
 (
-    id         bigserial primary key,
-    title      varchar(255),
-    price      int,
-    created_at timestamp default current_timestamp,
-    updated_at timestamp default current_timestamp
+    id              bigserial primary key,
+    title           varchar(255),
+    price           int,
+    category_id     bigint not null references categories (id),
+    created_at      timestamp default current_timestamp,
+    updated_at      timestamp default current_timestamp
 );
 
-insert into products (title, price)
-values ('Milk', 100),
-       ('Bread', 80),
-       ('Cheese', 90);
+insert into products (title, price, category_id)
+values ('Milk 2,5%', 60, 3),
+       ('Bread Tambov', 40, 4),
+       ('Cheese Russian', 480, 3),
+       ('Meat beef', 390, 5),
+       ('Pork meat', 360, 5),
+       ('Apple', 190, 2),
+       ('Orange', 160, 2),
+       ('Tomato', 225, 1),
+       ('Doctors sausage', 280, 5),
+       ('Metropolitan bun', 50, 4),
+       ('Milk 3,2%', 66, 3),
+       ('Mutton', 480, 5);
 
 create table users
 (
@@ -80,11 +105,33 @@ values (1, 200, 'address', '12345');
 insert into order_items (product_id, order_id, quantity, price_per_product, price)
 values (1, 1, 2, 100, 200);
 
+--create table categories
+--(
+--    id                  bigserial primary key,
+--    title               varchar(50) not null,
+--    created_at          timestamp default current_timestamp,
+--    updated_at          timestamp default current_timestamp
+--    );
+
+--create table products_categories
+--(
+--    product_id bigint not null references products (id),
+--    category_id bigint not null references categories (id),
+--    primary key (product_id, category_id)
+--    );
 
 
 
-
-
-
-
-
+--insert into products_categories (product_id, category_id)
+--values  (1, 3),
+--        (2, 4),
+--        (3, 3),
+--        (4, 5),
+--        (5, 5),
+--        (6, 2),
+--        (7, 2),
+--        (8, 1),
+--        (9, 5),
+--        (10, 4),
+--        (11, 3),
+--        (12, 5);
