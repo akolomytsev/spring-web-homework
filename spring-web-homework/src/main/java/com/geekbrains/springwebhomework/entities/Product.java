@@ -42,6 +42,6 @@ public class Product {
         this.id = id;
         this.title = title;
         this.price = price;
-        //this.category = category;
+       // this.category = category;
     }
 }

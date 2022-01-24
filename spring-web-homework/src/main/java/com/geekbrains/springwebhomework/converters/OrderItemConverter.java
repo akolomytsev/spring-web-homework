@@ -1,9 +1,7 @@
 package com.geekbrains.springwebhomework.converters;
 
 import com.geekbrains.springwebhomework.dto.OrderItemDto;
-import com.geekbrains.springwebhomework.dto.ProductDto;
 import com.geekbrains.springwebhomework.entities.OrderItem;
-import com.geekbrains.springwebhomework.entities.Product;
 import org.springframework.stereotype.Component;
 
 @Component
