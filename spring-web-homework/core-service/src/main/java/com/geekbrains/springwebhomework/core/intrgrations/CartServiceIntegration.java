@@ -1,0 +1,33 @@
+package com.geekbrains.springwebhomework.core.intrgrations;
+
+
+import com.geekbrains.spring.web.api.carts.CartDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
+
+@Component
+@RequiredArgsConstructor
+public class CartServiceIntegration {
+    private final WebClient cartServiceWebClient;
+
+    public void clearUserCart(String username){
+       cartServiceWebClient.get()
+                .uri("/api/v1/cart/0")
+                .header("username", username)
+                .retrieve()
+                .toBodilessEntity()
+                .block();
+
+    }
+
+    public CartDto getUserCart(String username){
+        CartDto cart = cartServiceWebClient.get()
+                .uri("/api/v1/cart/0")
+                .header("username", username)
+                .retrieve()
+                .bodyToMono(CartDto.class)
+                .block();
+        return cart;
+    }
+}

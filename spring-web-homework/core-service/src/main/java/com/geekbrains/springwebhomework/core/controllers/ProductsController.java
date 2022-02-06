@@ -2,7 +2,7 @@ package com.geekbrains.springwebhomework.core.controllers;
 
 import com.geekbrains.spring.web.api.exeptions.ResourceNotFoundException;
 import com.geekbrains.springwebhomework.core.converters.ProductConverter;
-import com.geekbrains.springwebhomework.core.dto.ProductDto;
+import com.geekbrains.spring.web.api.core.ProductDto;
 import com.geekbrains.springwebhomework.core.entities.Product;
 import com.geekbrains.springwebhomework.core.services.ProductsService;
 import com.geekbrains.springwebhomework.core.validators.ProductValidator;

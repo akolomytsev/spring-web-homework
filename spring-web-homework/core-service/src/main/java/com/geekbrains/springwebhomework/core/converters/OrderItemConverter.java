@@ -1,6 +1,6 @@
 package com.geekbrains.springwebhomework.core.converters;
 
-import com.geekbrains.springwebhomework.core.dto.OrderItemDto;
+import com.geekbrains.spring.web.api.core.OrderItemDto;
 import com.geekbrains.springwebhomework.core.entities.OrderItem;
 import org.springframework.stereotype.Component;
 

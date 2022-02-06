@@ -1,23 +1,10 @@
 server:
-  port: 8191
+  port: 8166
   servlet:
-    context-path: /web-market-cart
+    context-path: /web-market-carts
 utils:
   cart:
-    prefix: SPRING_WEB_
-spring:
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:mydatabase;MODE=PostgreSQL
-    username: sa
-    password:
-  jpa:
-    show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-  h2:
-    console:
-      enabled: true
-      settings:
-        web-allow-others: false
+    prefix: SPRING_WEB_APP_
+integrations:
+  core-service:
+    url: http://localhost:5555/core

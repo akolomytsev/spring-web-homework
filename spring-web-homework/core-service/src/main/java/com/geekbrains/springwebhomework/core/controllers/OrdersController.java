@@ -1,8 +1,8 @@
 package com.geekbrains.springwebhomework.core.controllers;
 
 import com.geekbrains.springwebhomework.core.converters.OrderConverter;
-import com.geekbrains.springwebhomework.core.dto.OrderDetailsDto;
-import com.geekbrains.springwebhomework.core.dto.OrderDto;
+import com.geekbrains.spring.web.api.core.OrderDetailsDto;
+import com.geekbrains.spring.web.api.core.OrderDto;
 import com.geekbrains.springwebhomework.core.services.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

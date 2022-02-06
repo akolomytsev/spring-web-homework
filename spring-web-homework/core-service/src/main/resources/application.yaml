@@ -21,3 +21,6 @@ spring:
       enabled: true
       settings:
         web-allow-others: false
+integration:
+  cart-service:
+    url: http://locaihost:5555/cart

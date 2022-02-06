@@ -17,20 +17,19 @@ angular.module('market-front').controller('storeController', function ($scope, $
         });
     };
 
-     $scope.generatePagesIndexes = function (startPage, endPage) {
-            let arr = [];
-            for (let i = startPage; i < endPage + 1; i++) {
-                arr.push(i);
-            }
-            return arr;
+    $scope.generatePagesIndexes = function (startPage, endPage) {
+        let arr = [];
+        for (let i = startPage; i < endPage + 1; i++) {
+            arr.push(i);
         }
+        return arr;
+    }
 
     $scope.addToCart = function (productId) {
-        $http.get(contextPath + 'api/v1/cart/' + $localStorage.springWebGuestCartId + '/add/' + productId)
+        $http.get('http://localhost:5555/cart/api/v1/cart/' + $localStorage.springWebGuestCartId + '/add/' + productId)
             .then(function (response) {
             });
     }
 
     $scope.loadProducts();
-
 });

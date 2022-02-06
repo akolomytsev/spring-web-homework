@@ -1,7 +1,7 @@
 package com.geekbrains.springwebhomework.core.services;
 
 import com.geekbrains.spring.web.api.exeptions.ResourceNotFoundException;
-import com.geekbrains.springwebhomework.core.dto.ProductDto;
+import com.geekbrains.spring.web.api.core.ProductDto;
 import com.geekbrains.springwebhomework.core.entities.Product;
 import com.geekbrains.springwebhomework.core.repositories.ProductsRepository;
 import com.geekbrains.springwebhomework.core.repositories.specifications.ProductsSpecifications;

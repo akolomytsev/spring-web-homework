@@ -1,11 +1,11 @@
 package com.geekbrains.springwebhomework.core.services;
 
+import com.geekbrains.spring.web.api.carts.CartDto;
 import com.geekbrains.spring.web.api.exeptions.ResourceNotFoundException;
-import com.geekbrains.spring.web.cart.dto.Cart;
-import com.geekbrains.spring.web.cart.services.CartService;
-import com.geekbrains.springwebhomework.core.dto.OrderDetailsDto;
+import com.geekbrains.spring.web.api.core.OrderDetailsDto;
 import com.geekbrains.springwebhomework.core.entities.Order;
 import com.geekbrains.springwebhomework.core.entities.OrderItem;
+import com.geekbrains.springwebhomework.core.intrgrations.CartServiceIntegration;
 import com.geekbrains.springwebhomework.core.repositories.OrdersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,17 +14,18 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+
 @Service
 @RequiredArgsConstructor
 public class OrderService {
     private final OrdersRepository ordersRepository;
-    private final CartService cartService;
+    private final CartServiceIntegration cartServiceIntegration;
     private final ProductsService productsService;
 
     @Transactional
     public void createOrder(String username, OrderDetailsDto orderDetailsDto) {
-        String cartKey = cartService.getCartUuidFromSuffix(username);
-        Cart currentCart = cartService.getCurrentCart(cartKey);
+        CartDto currentCart = cartServiceIntegration.getUserCart(username);
         Order order = new Order();
         order.setAddress(orderDetailsDto.getAddress());
         order.setPhone(orderDetailsDto.getPhone());
@@ -42,7 +43,7 @@ public class OrderService {
                 }).collect(Collectors.toList());
         order.setItems(items);
         ordersRepository.save(order);
-        cartService.clearCart(cartKey);
+        cartServiceIntegration.clearUserCart(username);;
     }
 
     public List<Order> findOrdersByUsername(String username) {
