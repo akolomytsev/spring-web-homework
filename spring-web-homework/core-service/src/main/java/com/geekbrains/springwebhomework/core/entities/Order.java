@@ -26,7 +26,7 @@ public class Order {
     private String username;
 
     @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<com.geekbrains.springwebhomework.core.entities.OrderItem> items;
+    private List<OrderItem> items;
 
     @Column(name = "total_price")
     private BigDecimal totalPrice;

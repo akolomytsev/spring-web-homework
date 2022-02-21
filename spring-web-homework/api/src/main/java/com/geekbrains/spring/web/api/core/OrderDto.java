@@ -1,14 +1,27 @@
 package com.geekbrains.spring.web.api.core;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.math.BigDecimal;
 import java.util.List;
 
 public class OrderDto {
+    @Schema(description = "ID пользователя", required = true, example = "1")
     private Long id;
+
+    @Schema(description = "Имя пользователя", required = true, maxLength = 255, minLength = 3, example = "Егор")
     private String username;
+
+    @Schema(description = "Список покупок пользователя", required = true, example = "Список покупок")
     private List<OrderItemDto> items;
+
+    @Schema(description = "Цена заказа", required = true, example = "12000.00")
     private BigDecimal totalPrice;
+
+    @Schema(description = "Адрес доставки", required = true, maxLength = 255, minLength = 3, example = "Тибет_@xxx.com")
     private String address;
+
+    @Schema(description = "Номер телефона пользователя", required = true, example = "8-800-2000-600")
     private String phone;
 
     public Long getId() {

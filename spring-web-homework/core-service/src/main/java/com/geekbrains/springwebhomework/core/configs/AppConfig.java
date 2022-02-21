@@ -1,8 +1,11 @@
 package com.geekbrains.springwebhomework.core.configs;
 
+import com.geekbrains.springwebhomework.core.properties.CartServiceIntegrationProperties;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
-import org.springframework.beans.factory.annotation.Value;
+import io.netty.handler.timeout.WriteTimeoutHandler;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -13,23 +16,27 @@ import reactor.netty.tcp.TcpClient;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
+@EnableConfigurationProperties(
+        CartServiceIntegrationProperties.class
+)
+@RequiredArgsConstructor
 public class AppConfig {
-    @Value("${integration.cart-service.url}")
-    private String cartServiceUrl;
+
+    private final CartServiceIntegrationProperties cartServiceIntegrationProperties;
 
     @Bean
     public WebClient productServiceWebClient(){
         TcpClient tcpClient = TcpClient
                 .create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 2000)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, cartServiceIntegrationProperties.getConnectTimeout())
                 .doOnConnected(connection -> {
-                    connection.addHandlerLast(new ReadTimeoutHandler(10000, TimeUnit.MICROSECONDS));
-                    connection.addHandlerLast(new ReadTimeoutHandler(2000, TimeUnit.MICROSECONDS));
-
+                    connection.addHandlerLast(new ReadTimeoutHandler(cartServiceIntegrationProperties.getReadTimeout(), TimeUnit.MILLISECONDS));
+                    connection.addHandlerLast(new WriteTimeoutHandler(cartServiceIntegrationProperties.getWriteTimeout(), TimeUnit.MILLISECONDS));
                 });
+
         return WebClient
                 .builder()
-                .baseUrl(cartServiceUrl)
+                .baseUrl(cartServiceIntegrationProperties.getUrl())
                 .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
                 .build();
     }

@@ -27,6 +27,6 @@ public class CartItem {
 
     public void changeQuantity(int delta) {
         this.quantity += delta;
-        this.price =this.pricePerProduct.multiply(BigDecimal.valueOf(this.quantity));
+        this.price = this.pricePerProduct.multiply(BigDecimal.valueOf(this.quantity));
     }
 }
